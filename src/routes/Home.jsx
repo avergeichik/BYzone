@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>BYzone construction — Handyman, Windows &amp; Doors, Home Renovation</title>
+        <title>BYzone construction — Windows &amp; Doors, Handyman, Home Renovation</title>
         <meta
           name="description"
           content="BYzone construction offers professional handyman services, windows and doors installation, and home renovation. Licensed and insured. Call for a free quote."
