@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+# BYzone construction
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Marketing site for BYzone construction — handyman work, windows and doors
+installation, and home renovation in the Ottawa area.
 
-## Available Scripts
+- Live: https://avergeichik.github.io/BYzone/
+- Target domain: byzoneconstruction.ca (transfer pending)
 
-In the project directory, you can run:
+## Stack
 
-### `npm start`
+- **Vite 5** + **React 18**, Tailwind CSS 3
+- **vite-prerender-plugin** renders the page to static HTML at build time, so
+  crawlers get real content from a static host
+- **react-helmet-async** owns the `<head>` tags
+- Deployed to **GitHub Pages** from the `gh-pages` branch
+- The quote form posts to an **AWS Lambda** (`api/send-quote.js`, deployed with
+  Serverless Framework) that emails submissions through SES
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Local development
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+npm install
+cp .env.example .env    # then fill it in, see below
+npm start               # http://localhost:5173
+```
 
-### `npm test`
+Other scripts:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm run build      # production build into dist/
+npm run preview    # serve dist/ exactly as it will be published
+npm run deploy     # build, then force-push dist/ to the gh-pages branch
+```
 
-### `npm run build`
+There is no test suite.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Environment
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+All values are read from `.env`, which is git-ignored. `.env.example` lists
+them.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Variable | Purpose |
+|---|---|
+| `VITE_BASE` | Path the site is served from. `/BYzone/` for the GitHub Pages project URL, `/` for the custom domain. Getting this wrong leaves the page unable to load its own assets. |
+| `VITE_GOOGLE_PLACES_API_KEY` | Google Places key for the live reviews. Ends up in the built bundle, so restrict it by HTTP referrer. |
+| `VITE_GOOGLE_PLACE_ID` | The business's Google place ID. |
+| `VITE_QUOTE_API_URL` | Absolute URL of the quote-form endpoint. Required in production: the default `/api/send-quote` only works behind a server that proxies it. |
 
-### `npm run eject`
+## Layout
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+index.html                     Vite template. Its <title> and <meta> are
+                               placeholders — Helmet overwrites them.
+src/index.jsx                  Client entry plus the prerender() export
+src/App.jsx                    Shell: nav, routed content, footer
+src/routes/Home.jsx            The only page; owns the real <head> tags
+src/components/sections/       One file per section of the page
+public/                        Copied verbatim into the build
+api/send-quote.js              Lambda handler for the quote form
+serverless.yml                 Its deployment config
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Things that will trip you up
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**The `<head>` lives in `Home.jsx`, not `index.html`.** The prerender replaces
+the template's `<title>` and meta tags with Helmet's, and hydration does it
+again in the browser. Editing `index.html` alone changes nothing a visitor
+sees. Keep the two in step anyway so the template is not misleading.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**`VITE_BASE` must match where the site is served.** The build writes absolute
+asset paths. A build made for `/` and published to `/BYzone/` loads its HTML
+and then 404s on every script and stylesheet — a blank page with no error.
 
-## Learn More
+**`npm run deploy` replaces the `gh-pages` branch wholesale.** It builds from
+the working tree, not from what is committed, and `gh-pages -d dist` removes
+anything in the branch that is not in `dist/`. So: commit first, pull first,
+and remember that a file only present in the branch (a `CNAME`, say) is gone
+after the next deploy unless it also lives in `public/`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Photos are served from `public/` with their original names.** The gallery
+lists them explicitly in `GallerySection.jsx`; the folder name contains a
+space and the extensions are mixed case, both of which the URLs must match
+exactly, since Pages is case-sensitive.
