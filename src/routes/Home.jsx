@@ -19,7 +19,7 @@ const Home = () => {
           content="BYzone construction offers professional handyman services, windows and doors installation, and home renovation. Licensed and insured. Call for a free quote."
         />
         <meta name="keywords" content="handyman services, windows and doors installation, home renovation, door replacement, window replacement, drywall repair, home maintenance" />
-        <meta property="og:title" content="BYzone construction — Handyman &amp; Home Renovation Services" />
+        <meta property="og:title" content="BYzone construction — Windows &amp; Doors, Handyman, Home Renovation" />
         <meta
           property="og:description"
           content="Professional handyman, windows &amp; doors, and home renovation services. Licensed, insured, and locally owned."
