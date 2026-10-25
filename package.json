@@ -16,14 +16,11 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "images": "node scripts/optimize-images.mjs",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "images": "node scripts/optimize-images.mjs"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
-    "gh-pages": "^6.1.1",
     "postcss": "^8.4.47",
     "sharp": "^0.35.5",
     "tailwindcss": "^3.4.10",
