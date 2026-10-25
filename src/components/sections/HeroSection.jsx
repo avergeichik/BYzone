@@ -1,6 +1,8 @@
 import React from 'react';
 import { FaPhone, FaInstagram, FaArrowDown } from 'react-icons/fa';
 
+import { SIZES } from '../../imageSizes';
+
 const HeroSection = () => {
   const scrollTo = (id) => {
     const el = typeof document !== 'undefined' ? document.getElementById(id) : null;
@@ -12,7 +14,7 @@ const HeroSection = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center bg-gray-900 overflow-hidden"
       style={{
-        backgroundImage: `url('${import.meta.env.BASE_URL}hero.jpg')`,
+        backgroundImage: `url('${import.meta.env.BASE_URL}hero.webp')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -26,6 +28,8 @@ const HeroSection = () => {
           <img
             src={`${import.meta.env.BASE_URL}logo-transparent-bg.png`}
             alt="BYzone construction"
+            width={SIZES.logo.width}
+            height={SIZES.logo.height}
             className="h-28 w-auto drop-shadow-xl"
           />
         </div>

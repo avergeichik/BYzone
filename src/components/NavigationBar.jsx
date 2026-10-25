@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
+import { SIZES } from '../imageSizes';
+
 const NAV_ITEMS = [
   { label: 'Home', id: 'home' },
   { label: 'About', id: 'about' },
@@ -68,7 +70,7 @@ const NavigationBar = () => {
             onClick={(e) => handleNavClick(e, 'home')}
             className="flex items-center space-x-2 flex-shrink-0"
           >
-            <img src={`${import.meta.env.BASE_URL}logo-transparent-bg.png`} alt="BYzone construction" className="h-9 w-auto" />
+            <img src={`${import.meta.env.BASE_URL}logo-transparent-bg.png`} alt="BYzone construction" width={SIZES.logo.width} height={SIZES.logo.height} className="h-9 w-auto" />
             <span className="font-bold text-brand-blue text-lg hidden sm:block">BYzone construction</span>
           </a>
 

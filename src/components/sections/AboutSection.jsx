@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaCheckCircle, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
+import { SIZES } from '../../imageSizes';
+
 const highlights = [
   'Licensed and insured for your peace of mind',
   'Serving local homeowners with quality workmanship',
@@ -10,7 +12,7 @@ const highlights = [
 
 const BASE = import.meta.env.BASE_URL;
 const ABOUT_IMAGES = [1, 2, 3, 4].map((n) => ({
-  src: `${BASE}About/${n}.JPG`,
+  src: `${BASE}about/about-${n}.webp`,
   alt: `Byzone work photo ${n}`,
 }));
 
@@ -58,6 +60,9 @@ const AboutSection = () => {
                 key={ABOUT_IMAGES[current].src}
                 src={ABOUT_IMAGES[current].src}
                 alt={ABOUT_IMAGES[current].alt}
+                width={SIZES.about.width}
+                height={SIZES.about.height}
+                decoding="async"
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';

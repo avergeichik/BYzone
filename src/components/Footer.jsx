@@ -1,6 +1,8 @@
 import React from "react";
 import { FaInstagram, FaPhone, FaEnvelope } from "react-icons/fa";
 
+import { SIZES } from "../imageSizes";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -10,7 +12,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div>
-            <img src={`${import.meta.env.BASE_URL}logo-transparent-bg.png`} alt="BYzone construction" className="h-16 w-auto mb-4" />
+            <img src={`${import.meta.env.BASE_URL}logo-transparent-bg.png`} alt="BYzone construction" width={SIZES.logo.width} height={SIZES.logo.height} className="h-16 w-auto mb-4" />
             <p className="text-gray-300 text-sm font-semibold">BYzone construction</p>
             <p className="text-gray-400 text-sm mt-1">
               Handyman · Windows &amp; Doors · Home Renovation
