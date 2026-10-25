@@ -2,7 +2,7 @@
   "name": "byzone",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://kael558.github.io/Byzone",
+  "homepage": "https://byzoneconstruction.ca",
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1019.0",
     "react": "^18.3.1",

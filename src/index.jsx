@@ -33,6 +33,21 @@ export async function prerender({ url }) {
 	);
 
 	const { helmet } = helmetContext;
+
+	// react-helmet-async returns a complete <title data-rh="true">...</title>
+	// tag, while the plugin expects bare text and escapes whatever it is given.
+	// Strip the tag (attributes included) and decode the entities helmet added,
+	// or the markup itself ends up double-escaped inside <title>.
+	const titleText = (tag) =>
+		tag
+			.replace(/<title[^>]*>/i, "")
+			.replace(/<\/title>/i, "")
+			.replace(/&lt;/g, "<")
+			.replace(/&gt;/g, ">")
+			.replace(/&quot;/g, '"')
+			.replace(/&#39;/g, "'")
+			.replace(/&amp;/g, "&")
+			.trim();
 	const headElements = new Set();
 	if (helmet) {
 		if (helmet.meta.toString()) headElements.add(helmet.meta.toString());
@@ -43,10 +58,7 @@ export async function prerender({ url }) {
 		html,
 		head: helmet
 			? {
-					title: helmet.title
-						.toString()
-						.replace(/<\/?title>/g, "")
-						.trim(),
+					title: titleText(helmet.title.toString()),
 					elements: headElements,
 			  }
 			: undefined,

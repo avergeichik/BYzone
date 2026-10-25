@@ -74,7 +74,7 @@ const ContactSection = () => {
             Request a Free Quote
           </h2>
           <p className="text-gray-500 max-w-xl mx-auto">
-            Ready to improve your home? Contact Byzone CONSTRUCTION for handyman work, renovation support,
+            Ready to improve your home? Contact BYzone construction for handyman work, renovation support,
             and windows and doors services. Fast response, honest communication, and clean
             professional work.
           </p>
@@ -93,10 +93,10 @@ const ContactSection = () => {
                   <div>
                     <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Phone</p>
                     <a
-                      href="tel:+10000000000"
+                      href="tel:+15879986760"
                       className="text-gray-700 hover:text-brand-green transition-colors duration-200 font-medium"
                     >
-                      [Phone number coming soon]
+                      +1 587-998-6760
                     </a>
                     <p className="text-xs text-gray-400 mt-0.5">Click to call on mobile</p>
                   </div>
@@ -109,10 +109,10 @@ const ContactSection = () => {
                   <div>
                     <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Email</p>
                     <a
-                      href="mailto:info@byzone.ca"
+                      href="mailto:byzoneconstruction@gmail.com"
                       className="text-gray-700 hover:text-brand-green transition-colors duration-200 font-medium"
                     >
-                      [Email coming soon]
+                      byzoneconstruction@gmail.com
                     </a>
                   </div>
                 </li>
@@ -123,7 +123,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Service Area</p>
-                    <p className="text-gray-700 font-medium">[Service area coming soon]</p>
+                    <p className="text-gray-700 font-medium">Ottawa, Kanata, Stittsville, Barrhaven, Nepean, Carp, and Carleton Place</p>
                     <p className="text-xs text-gray-400 mt-0.5">Local homeowners welcome</p>
                   </div>
                 </li>
@@ -153,7 +153,7 @@ const ContactSection = () => {
                 Give us a ring and we'll discuss your project and provide a free estimate.
               </p>
               <a
-                href="tel:+10000000000"
+                href="tel:+15879986760"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-green hover:bg-brand-green-light text-white text-sm font-bold transition-colors duration-200"
               >
                 <FaPhone size={14} />

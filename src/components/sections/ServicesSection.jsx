@@ -14,7 +14,12 @@ const SERVICE_CATEGORIES = [
       'Locks, handles, hinges, and seals',
       'Caulking and sealing around windows and doors',
       'Weatherstripping replacement',
-      'Storm window and door installation',
+      'Storm door installation',
+      'Egress window installation (turn-key service)',
+      'Window opening cutting and enlargement',
+      'Custom framing and resizing of window and door openings',
+      'BAY and BOW window installation',
+      'Structural modifications for new window installations',
     ],
   },
   {

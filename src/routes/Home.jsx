@@ -13,32 +13,32 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Byzone CONSTRUCTION — Handyman, Windows &amp; Doors, Home Renovation</title>
+        <title>BYzone construction — Handyman, Windows &amp; Doors, Home Renovation</title>
         <meta
           name="description"
-          content="Byzone CONSTRUCTION offers professional handyman services, windows and doors installation, and home renovation. Licensed and insured. Call for a free quote."
+          content="BYzone construction offers professional handyman services, windows and doors installation, and home renovation. Licensed and insured. Call for a free quote."
         />
         <meta name="keywords" content="handyman services, windows and doors installation, home renovation, door replacement, window replacement, drywall repair, home maintenance" />
-        <meta property="og:title" content="Byzone CONSTRUCTION — Handyman &amp; Home Renovation Services" />
+        <meta property="og:title" content="BYzone construction — Handyman &amp; Home Renovation Services" />
         <meta
           property="og:description"
           content="Professional handyman, windows &amp; doors, and home renovation services. Licensed, insured, and locally owned."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://byzone.ca/" />
+        <meta property="og:url" content="https://byzoneconstruction.ca/" />
         <meta name="twitter:card" content="summary_large_image" />
-        <link rel="canonical" href="https://byzone.ca/" />
+        <link rel="canonical" href="https://byzoneconstruction.ca/" />
         <script type="application/ld+json">{JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'LocalBusiness',
-          name: 'Byzone CONSTRUCTION',
+          name: 'BYzone construction',
           description: 'Handyman, home renovation, windows and doors services',
-          telephone: '[PHONE]',
-          email: '[EMAIL]',
+          telephone: '+1 587-998-6760',
+          email: 'byzoneconstruction@gmail.com',
           address: {
             '@type': 'PostalAddress',
-            addressLocality: '[CITY]',
-            addressRegion: '[PROVINCE]',
+            addressLocality: 'Ottawa',
+            addressRegion: 'ON',
           },
           sameAs: ['https://www.instagram.com/BYZONE_CONSTRUCTION/'],
         })}</script>

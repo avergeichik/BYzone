@@ -25,17 +25,23 @@ const HeroSection = () => {
         <div className="flex justify-center mb-8">
           <img
             src={`${import.meta.env.BASE_URL}logo-transparent-bg.png`}
-            alt="Byzone CONSTRUCTION"
+            alt="BYzone construction"
             className="h-28 w-auto drop-shadow-xl"
           />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">
-          Handyman, Home Renovation,<br className="hidden sm:block" /> Windows and Doors Services
+        <p className="text-brand-green font-semibold text-sm uppercase tracking-widest mb-4">
+          Trusted family-owned business
+        </p>
+
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6">
+          Customized Windows and Doors<br />
+          Services &amp; Installation<br />
+          <span className="text-gray-300">Home Renovation and Repairs</span>
         </h1>
 
         <p className="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto mb-3 leading-relaxed">
-          Byzone CONSTRUCTION helps homeowners with reliable interior and exterior repairs, home improvement,
+          BYzone construction helps homeowners with reliable interior and exterior repairs, home improvement,
           and professional windows and doors work.
         </p>
 
@@ -73,7 +79,7 @@ const HeroSection = () => {
         {/* Phone CTA */}
         <div className="mt-8">
           <a
-            href="tel:+10000000000"
+            href="tel:+15879986760"
             className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm"
           >
             <FaPhone size={14} />

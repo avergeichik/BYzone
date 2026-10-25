@@ -25,3 +25,5 @@ yarn-error.log*
 .env
 
 api/node_modules
+# build output
+/dist
