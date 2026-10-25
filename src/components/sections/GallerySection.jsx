@@ -2,16 +2,32 @@ import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 const BASE = import.meta.env.BASE_URL;
-const GALLERY_IMAGES = [
-  { src: `${BASE}gallery/gallery-1.jpg`, alt: 'Window installation work' },
-  { src: `${BASE}gallery/gallery-2.jpg`, alt: 'Door replacement project' },
-  { src: `${BASE}gallery/gallery-3.jpg`, alt: 'Interior handyman repair' },
-  { src: `${BASE}gallery/gallery-4.jpg`, alt: 'Home renovation project' },
-  { src: `${BASE}gallery/gallery-5.jpg`, alt: 'Exterior maintenance work' },
-  { src: `${BASE}gallery/gallery-6.jpg`, alt: 'Drywall repair completed' },
-  { src: `${BASE}gallery/gallery-7.jpg`, alt: 'Deck refinishing project' },
-  { src: `${BASE}gallery/gallery-8.jpg`, alt: 'Finished renovation work' },
+const GALLERY_DIR = `${BASE}Project%20Gallery/`;
+const GALLERY_FILES = [
+  'after1.jpg',
+  'IMG_2844.JPG',
+  'IMG_6175.JPG',
+  'IMG_6176.JPG',
+  'IMG_6177.jpg',
+  'IMG_6178.JPG',
+  'IMG_6179.JPG',
+  'IMG_6181.JPG',
+  'IMG_6182.JPG',
+  'IMG_6183.JPG',
+  'IMG_6184.jpg',
+  'IMG_6185.jpg',
+  'IMG_6186.JPG',
+  'IMG_6187.JPG',
+  'IMG_6188.JPG',
+  'IMG_6189.JPG',
+  'IMG_6190.JPG',
+  'IMG_6191.JPG',
+  'insiteafter1.jpg',
 ];
+const GALLERY_IMAGES = GALLERY_FILES.map((file) => ({
+  src: `${GALLERY_DIR}${file}`,
+  alt: 'Project photo',
+}));
 
 const GallerySection = () => {
   const [lightbox, setLightbox] = useState(null);

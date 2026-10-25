@@ -52,7 +52,7 @@ const WhyChooseUsSection = () => {
             Why Choose Us
           </h2>
           <p className="text-blue-200 max-w-xl mx-auto">
-            We built Byzone CONSTRUCTION around the values homeowners care about most.
+            We built BYzone construction around the values homeowners care about most.
           </p>
         </div>
 
