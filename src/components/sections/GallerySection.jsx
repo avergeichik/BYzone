@@ -1,33 +1,21 @@
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
+import { SIZES } from '../../imageSizes';
+
 const BASE = import.meta.env.BASE_URL;
-const GALLERY_DIR = `${BASE}Project%20Gallery/`;
-const GALLERY_FILES = [
-  'after1.jpg',
-  'IMG_2844.JPG',
-  'IMG_6175.JPG',
-  'IMG_6176.JPG',
-  'IMG_6177.jpg',
-  'IMG_6178.JPG',
-  'IMG_6179.JPG',
-  'IMG_6181.JPG',
-  'IMG_6182.JPG',
-  'IMG_6183.JPG',
-  'IMG_6184.jpg',
-  'IMG_6185.jpg',
-  'IMG_6186.JPG',
-  'IMG_6187.JPG',
-  'IMG_6188.JPG',
-  'IMG_6189.JPG',
-  'IMG_6190.JPG',
-  'IMG_6191.JPG',
-  'insiteafter1.jpg',
-];
-const GALLERY_IMAGES = GALLERY_FILES.map((file) => ({
-  src: `${GALLERY_DIR}${file}`,
-  alt: 'Project photo',
-}));
+const GALLERY_COUNT = 19;
+
+// Two renditions per photo, both built by `npm run images`: a square crop for
+// the grid and a larger uncropped one the lightbox shows on demand.
+const GALLERY_IMAGES = Array.from({ length: GALLERY_COUNT }, (_, i) => {
+  const name = `gallery-${String(i + 1).padStart(2, '0')}.webp`;
+  return {
+    thumb: `${BASE}gallery/thumb/${name}`,
+    full: `${BASE}gallery/full/${name}`,
+    alt: 'Project photo',
+  };
+});
 
 const GallerySection = () => {
   const [lightbox, setLightbox] = useState(null);
@@ -65,8 +53,12 @@ const GallerySection = () => {
                   className="group relative aspect-square overflow-hidden rounded-xl bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-green"
                 >
                   <img
-                    src={img.src}
+                    src={img.thumb}
                     alt={img.alt}
+                    width={SIZES.galleryThumb.width}
+                    height={SIZES.galleryThumb.height}
+                    loading="lazy"
+                    decoding="async"
                     onError={() => handleError(index)}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -123,7 +115,7 @@ const GallerySection = () => {
             <FaTimes size={28} />
           </button>
           <img
-            src={GALLERY_IMAGES[lightbox].src}
+            src={GALLERY_IMAGES[lightbox].full}
             alt={GALLERY_IMAGES[lightbox].alt}
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
