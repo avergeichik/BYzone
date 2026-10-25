@@ -16,13 +16,13 @@ const Home = () => {
         <title>BYzone construction — Windows &amp; Doors, Handyman, Home Renovation</title>
         <meta
           name="description"
-          content="BYzone construction offers professional handyman services, windows and doors installation, and home renovation. Licensed and insured. Call for a free quote."
+          content="BYzone construction offers professional windows and doors installation, handyman services, and home renovation. Licensed and insured. Call for a free quote."
         />
-        <meta name="keywords" content="handyman services, windows and doors installation, home renovation, door replacement, window replacement, drywall repair, home maintenance" />
+        <meta name="keywords" content="windows and doors installation, handyman services, home renovation, window replacement, door replacement, drywall repair, home maintenance" />
         <meta property="og:title" content="BYzone construction — Windows &amp; Doors, Handyman, Home Renovation" />
         <meta
           property="og:description"
-          content="Professional handyman, windows &amp; doors, and home renovation services. Licensed, insured, and locally owned."
+          content="Professional windows &amp; doors, handyman, and home renovation services. Licensed, insured, and locally owned."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://byzoneconstruction.ca/" />
