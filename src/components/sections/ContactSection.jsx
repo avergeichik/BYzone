@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa';
 
+const PHONE_DISPLAY = '+1 587-998-6760';
+const PHONE_HREF = 'tel:+15879986760';
+
+// Mirrors the caps the endpoint enforces. The server is the one that counts;
+// these just stop someone pasting a novel into the box by accident.
+const LIMITS = {
+  name: 100,
+  phone: 40,
+  email: 150,
+  message: 2000,
+};
+
 const SERVICE_OPTIONS = [
   'Windows & Doors',
   'Interior Handyman Services',
@@ -17,39 +29,57 @@ const ContactSection = () => {
   const [preferredContact, setPreferredContact] = useState('phone');
   const [isLoading, setIsLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  // Honeypot: a field no person can see, so anything in it came from a bot.
+  const [company, setCompany] = useState('');
+
+  const resetForm = () => {
+    setName('');
+    setPhone('');
+    setEmail('');
+    setService('');
+    setMessage('');
+    setPreferredContact('phone');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Bots fill every field they find, including the hidden one. Show them the
+    // same success they would get otherwise, so they have nothing to tune.
+    if (company) {
+      setSubmitStatus('success');
+      resetForm();
+      return;
+    }
+
+    const endpoint = import.meta.env.VITE_QUOTE_API_URL;
+    if (!endpoint) {
+      // Without this the form used to post to a relative path that no static
+      // host answers, and every enquiry was quietly lost.
+      console.error('VITE_QUOTE_API_URL is not set — the quote form has nowhere to post.');
+      setSubmitStatus('error');
+      return;
+    }
+
     setIsLoading(true);
     setSubmitStatus(null);
 
-    const data = new FormData();
-    data.append('name', name);
-    data.append('phone', phone);
-    data.append('email', email);
-    data.append('service', service);
-    data.append('message', message);
-    data.append('preferredContact', preferredContact);
-    data.append('sheetName', 'ByZone');
-
     try {
-      // Points to the serverless SES handler in /api/send-quote.js
-      // In local dev this needs a proxy or a deployed URL.
-      // Set VITE_QUOTE_API_URL in your .env to override (e.g. your Lambda Function URL).
-      const apiUrl = import.meta.env.VITE_QUOTE_API_URL || '/api/send-quote';
-      const response = await fetch(apiUrl, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(Object.fromEntries(data)),
+        body: JSON.stringify({
+          name: name.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          service,
+          message: message.trim(),
+          preferredContact,
+        }),
       });
       if (response.ok) {
         setSubmitStatus('success');
-        setName('');
-        setPhone('');
-        setEmail('');
-        setService('');
-        setMessage('');
-        setPreferredContact('phone');
+        resetForm();
       } else {
         setSubmitStatus('error');
       }
@@ -166,12 +196,40 @@ const ContactSection = () => {
           <div className="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
             <h3 className="font-bold text-brand-blue text-lg mb-6">Send Us a Message</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Hidden from people and from screen readers; only bots fill it. */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  width: 1,
+                  height: 1,
+                  margin: -1,
+                  padding: 0,
+                  border: 0,
+                  overflow: 'hidden',
+                  clip: 'rect(0 0 0 0)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <label htmlFor="company">Company</label>
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className={labelClass}>Full Name *</label>
                   <input
                     type="text"
                     id="name"
+                    maxLength={LIMITS.name}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
@@ -184,6 +242,7 @@ const ContactSection = () => {
                   <input
                     type="tel"
                     id="phone"
+                    maxLength={LIMITS.phone}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="(555) 000-0000"
@@ -197,6 +256,7 @@ const ContactSection = () => {
                 <input
                   type="email"
                   id="email"
+                  maxLength={LIMITS.email}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -224,6 +284,7 @@ const ContactSection = () => {
                 <label htmlFor="message" className={labelClass}>Describe Your Project *</label>
                 <textarea
                   id="message"
+                  maxLength={LIMITS.message}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
@@ -273,7 +334,11 @@ const ContactSection = () => {
             {submitStatus === 'error' && (
               <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <p className="text-red-600 text-sm">
-                  Something went wrong. Please call us directly or try again.
+                  We could not send that. Please try again, or call us directly at{' '}
+                  <a href={PHONE_HREF} className="font-semibold underline">
+                    {PHONE_DISPLAY}
+                  </a>
+                  .
                 </p>
               </div>
             )}
