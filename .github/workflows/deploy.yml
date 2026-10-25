@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+# Runs on every merge to main, and on demand from the Actions tab. Anyone with
+# write access to the repository can trigger it by hand; the token it publishes
+# with is issued by GitHub for this run, so no personal credentials are needed.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it half way.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          # Repository variables, not secrets: every one of these ships inside
+          # the built bundle anyway. The Places key is restricted by HTTP
+          # referrer in the Google Cloud console instead.
+          VITE_BASE: ${{ vars.VITE_BASE }}
+          VITE_GOOGLE_PLACES_API_KEY: ${{ vars.VITE_GOOGLE_PLACES_API_KEY }}
+          VITE_GOOGLE_PLACE_ID: ${{ vars.VITE_GOOGLE_PLACE_ID }}
+          VITE_QUOTE_API_URL: ${{ vars.VITE_QUOTE_API_URL }}
+
+      - name: Fail if the build picked up the wrong base path
+        run: |
+          expected="${{ vars.VITE_BASE }}"
+          if ! grep -q "src=\"${expected}assets/" dist/index.html; then
+            echo "dist/index.html does not reference ${expected}assets/ — VITE_BASE is wrong."
+            echo "Asset references found:"
+            grep -o 'src="[^"]*assets/[^"]*"' dist/index.html | sort -u
+            exit 1
+          fi
+          echo "Base path OK: ${expected}"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

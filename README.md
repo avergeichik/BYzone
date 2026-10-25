@@ -29,10 +29,28 @@ Other scripts:
 ```bash
 npm run build      # production build into dist/
 npm run preview    # serve dist/ exactly as it will be published
-npm run deploy     # build, then force-push dist/ to the gh-pages branch
+npm run images     # regenerate the web-sized photos in public/ from photos/
 ```
 
 There is no test suite.
+
+## Deployment
+
+Pushing to `main` deploys. The workflow in `.github/workflows/deploy.yml` builds
+the site and publishes it to GitHub Pages. There is no deploy command to run by
+hand and nothing is ever published from a working tree. It can also be started
+from the Actions tab by anyone with write access to the repository.
+
+Build-time values come from repository variables, under
+Settings -> Secrets and variables -> Actions: `VITE_BASE`,
+`VITE_GOOGLE_PLACES_API_KEY`, `VITE_GOOGLE_PLACE_ID` and optionally
+`VITE_QUOTE_API_URL` — the same names `.env` uses locally. They are variables
+rather than secrets because each one ends up in the built bundle where anyone
+can read it; the Places key is protected by an HTTP referrer restriction in
+Google Cloud instead.
+
+The build fails if the asset paths it produces do not match `VITE_BASE`, so a
+base-path mistake stops the deploy instead of shipping a blank page.
 
 ## Environment
 
@@ -71,11 +89,10 @@ sees. Keep the two in step anyway so the template is not misleading.
 asset paths. A build made for `/` and published to `/BYzone/` loads its HTML
 and then 404s on every script and stylesheet — a blank page with no error.
 
-**`npm run deploy` replaces the `gh-pages` branch wholesale.** It builds from
-the working tree, not from what is committed, and `gh-pages -d dist` removes
-anything in the branch that is not in `dist/`. So: commit first, pull first,
-and remember that a file only present in the branch (a `CNAME`, say) is gone
-after the next deploy unless it also lives in `public/`.
+**Anything the site serves has to live in `public/`.** The deploy publishes
+exactly what the build produces, so a file that exists only on the live site —
+a `CNAME`, say — is gone the next time the workflow runs unless `public/` has
+it too.
 
 **Photos are served from `public/` with their original names.** The gallery
 lists them explicitly in `GallerySection.jsx`; the folder name contains a
