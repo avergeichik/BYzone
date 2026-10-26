@@ -14,9 +14,9 @@ compatibility_date = "2026-10-01"
 QUOTE_TO_EMAIL = "byzoneconstruction@gmail.com"
 QUOTE_FROM_EMAIL = "BYzone construction <onboarding@resend.dev>"
 
-# The reviews endpoint. SITE_ORIGIN is sent as the Referer to Google, because
-# the key is restricted by referrer and a worker has none of its own.
-GOOGLE_PLACE_ID = "ChIJU8oCTKrBTEIRXYkGUxOrrNM"
-SITE_ORIGIN = "https://byzoneconstruction.ca"
-
+# The reviews endpoint. SITE_ORIGIN is sent as the Referer to Google, because
+# the key is restricted by referrer and a worker has none of its own.
+GOOGLE_PLACE_ID = "ChIJU8oCTKrBTEIRXYkGUxOrrNM"
+SITE_ORIGIN = "https://byzoneconstruction.ca"
+
 ALLOWED_ORIGINS = "https://avergeichik.github.io,https://byzoneconstruction.ca,http://localhost:5173"
