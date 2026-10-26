@@ -1,6 +1,6 @@
 {
-  "short_name": "Byzone",
-  "name": "Byzone CONSTRUCTION — Handyman Services",
+  "short_name": "BYzone",
+  "name": "BYzone construction — Windows & Doors, Handyman, Home Renovation",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,7 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo.png",
+      "src": "icon-180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "icon-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

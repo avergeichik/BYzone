@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "https://byzoneconstruction.ca",
   "dependencies": {
-    "@aws-sdk/client-ses": "^3.1019.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",

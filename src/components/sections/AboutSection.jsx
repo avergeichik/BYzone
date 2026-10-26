@@ -11,9 +11,14 @@ const highlights = [
 ];
 
 const BASE = import.meta.env.BASE_URL;
-const ABOUT_IMAGES = [1, 2, 3, 4].map((n) => ({
-  src: `${BASE}about/about-${n}.webp`,
-  alt: `Byzone work photo ${n}`,
+const ABOUT_IMAGES = [
+  'Owner of BYzone construction standing in front of a finished job',
+  'Brick two-storey home with new windows and a rebuilt front porch',
+  'White bay window with a sloped seat board on a stone and siding bungalow',
+  'White sliding patio door in a stucco wall opening onto a deck',
+].map((alt, i) => ({
+  src: `${BASE}about/about-${i + 1}.webp`,
+  alt,
 }));
 
 const AboutSection = () => {
