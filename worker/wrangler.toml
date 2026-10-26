@@ -7,10 +7,16 @@ compatibility_date = "2026-10-01"
 #   TELEGRAM_BOT_TOKEN   from @BotFather
 #   TELEGRAM_CHAT_ID     the workers' group, a negative number
 #   RESEND_API_KEY       from the Resend dashboard
+#   GOOGLE_PLACES_API_KEY  the Places key the reviews section used to carry
 [vars]
 # Until a domain is verified in Resend, mail can only go to the address the
 # Resend account was registered with, and must be sent from resend.dev.
 QUOTE_TO_EMAIL = "byzoneconstruction@gmail.com"
 QUOTE_FROM_EMAIL = "BYzone construction <onboarding@resend.dev>"
 
+# The reviews endpoint. SITE_ORIGIN is sent as the Referer to Google, because
+# the key is restricted by referrer and a worker has none of its own.
+GOOGLE_PLACE_ID = "ChIJU8oCTKrBTEIRXYkGUxOrrNM"
+SITE_ORIGIN = "https://byzoneconstruction.ca"
+
 ALLOWED_ORIGINS = "https://avergeichik.github.io,https://byzoneconstruction.ca,http://localhost:5173"

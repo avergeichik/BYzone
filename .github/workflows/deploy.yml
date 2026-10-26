@@ -38,9 +38,8 @@ jobs:
           # the built bundle anyway. The Places key is restricted by HTTP
           # referrer in the Google Cloud console instead.
           VITE_BASE: ${{ vars.VITE_BASE }}
-          VITE_GOOGLE_PLACES_API_KEY: ${{ vars.VITE_GOOGLE_PLACES_API_KEY }}
           VITE_GOOGLE_PLACE_ID: ${{ vars.VITE_GOOGLE_PLACE_ID }}
-          VITE_QUOTE_API_URL: ${{ vars.VITE_QUOTE_API_URL }}
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
 
       - name: Fail if the build picked up the wrong base path
         run: |

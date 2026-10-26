@@ -43,11 +43,11 @@ from the Actions tab by anyone with write access to the repository.
 
 Build-time values come from repository variables, under
 Settings -> Secrets and variables -> Actions: `VITE_BASE`,
-`VITE_GOOGLE_PLACES_API_KEY`, `VITE_GOOGLE_PLACE_ID` and optionally
-`VITE_QUOTE_API_URL` — the same names `.env` uses locally. They are variables
-rather than secrets because each one ends up in the built bundle where anyone
-can read it; the Places key is protected by an HTTP referrer restriction in
-Google Cloud instead.
+`VITE_GOOGLE_PLACE_ID` and `VITE_API_URL` — the same names `.env` uses
+locally. They are variables rather than secrets because each one ends up in
+the built bundle where anyone can read it. Nothing that needs protecting is
+built into the site: the Places key lives in the Worker.
+
 
 The build fails if the asset paths it produces do not match `VITE_BASE`, so a
 base-path mistake stops the deploy instead of shipping a blank page.
@@ -60,9 +60,9 @@ them.
 | Variable | Purpose |
 |---|---|
 | `VITE_BASE` | Path the site is served from. `/BYzone/` for the GitHub Pages project URL, `/` for the custom domain. Getting this wrong leaves the page unable to load its own assets. |
-| `VITE_GOOGLE_PLACES_API_KEY` | Google Places key for the live reviews. Ends up in the built bundle, so restrict it by HTTP referrer. |
-| `VITE_GOOGLE_PLACE_ID` | The business's Google place ID. |
-| `VITE_QUOTE_API_URL` | Absolute URL of the quote-form Worker. **Required** — without it the form refuses to submit and says so, rather than posting into the void. |
+| `VITE_GOOGLE_PLACE_ID` | The business's Google place ID. Only used to build the "see all reviews" link; not a credential. |
+| `VITE_API_URL` | Absolute URL of the Worker. **Required** — the quote form posts to `/quote` and the reviews section reads `/reviews`. Without it the form refuses to submit and says so rather than posting into the void, and the reviews section hides itself. |
+
 
 ## Layout
 
