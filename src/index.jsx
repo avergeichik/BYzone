@@ -52,6 +52,10 @@ export async function prerender({ url }) {
 	if (helmet) {
 		if (helmet.meta.toString()) headElements.add(helmet.meta.toString());
 		if (helmet.link.toString()) headElements.add(helmet.link.toString());
+		// The JSON-LD LocalBusiness block is a <script> tag. Without this it
+		// only exists after hydration, so anything reading the served HTML —
+		// social previews, crawlers that do not run JS — never sees it.
+		if (helmet.script.toString()) headElements.add(helmet.script.toString());
 	}
 
 	return {
