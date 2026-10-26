@@ -1,0 +1,16 @@
+name = "byzone-quote"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# Plain configuration, safe to read. Secrets are set separately with
+# `wrangler secret put` and never appear in this file:
+#   TELEGRAM_BOT_TOKEN   from @BotFather
+#   TELEGRAM_CHAT_ID     the workers' group, a negative number
+#   RESEND_API_KEY       from the Resend dashboard
+[vars]
+# Until a domain is verified in Resend, mail can only go to the address the
+# Resend account was registered with, and must be sent from resend.dev.
+QUOTE_TO_EMAIL = "byzoneconstruction@gmail.com"
+QUOTE_FROM_EMAIL = "BYzone construction <onboarding@resend.dev>"
+
+ALLOWED_ORIGINS = "https://avergeichik.github.io,https://byzoneconstruction.ca,http://localhost:5173"

@@ -13,8 +13,8 @@ installation, and home renovation in the Ottawa area.
   crawlers get real content from a static host
 - **react-helmet-async** owns the `<head>` tags
 - Deployed to **GitHub Pages** from the `gh-pages` branch
-- The quote form posts to an **AWS Lambda** (`api/send-quote.js`, deployed with
-  Serverless Framework) that emails submissions through SES
+- The quote form posts to a **Cloudflare Worker** (`worker/`) that forwards
+  each request to the workers' Telegram group and to email via Resend
 
 ## Local development
 
@@ -62,7 +62,7 @@ them.
 | `VITE_BASE` | Path the site is served from. `/BYzone/` for the GitHub Pages project URL, `/` for the custom domain. Getting this wrong leaves the page unable to load its own assets. |
 | `VITE_GOOGLE_PLACES_API_KEY` | Google Places key for the live reviews. Ends up in the built bundle, so restrict it by HTTP referrer. |
 | `VITE_GOOGLE_PLACE_ID` | The business's Google place ID. |
-| `VITE_QUOTE_API_URL` | Absolute URL of the quote-form endpoint. Required in production: the default `/api/send-quote` only works behind a server that proxies it. |
+| `VITE_QUOTE_API_URL` | Absolute URL of the quote-form Worker. **Required** — without it the form refuses to submit and says so, rather than posting into the void. |
 
 ## Layout
 
@@ -74,8 +74,8 @@ src/App.jsx                    Shell: nav, routed content, footer
 src/routes/Home.jsx            The only page; owns the real <head> tags
 src/components/sections/       One file per section of the page
 public/                        Copied verbatim into the build
-api/send-quote.js              Lambda handler for the quote form
-serverless.yml                 Its deployment config
+worker/                        Cloudflare Worker behind the quote form,
+                               deployed separately — see worker/README.md
 ```
 
 ## Things that will trip you up
