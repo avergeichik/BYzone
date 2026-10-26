@@ -52,11 +52,11 @@ const ContactSection = () => {
       return;
     }
 
-    const endpoint = import.meta.env.VITE_QUOTE_API_URL;
-    if (!endpoint) {
+    const api = import.meta.env.VITE_API_URL;
+    if (!api) {
       // Without this the form used to post to a relative path that no static
       // host answers, and every enquiry was quietly lost.
-      console.error('VITE_QUOTE_API_URL is not set — the quote form has nowhere to post.');
+      console.error('VITE_API_URL is not set — the quote form has nowhere to post.');
       setSubmitStatus('error');
       return;
     }
@@ -65,7 +65,7 @@ const ContactSection = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch(`${api}/quote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

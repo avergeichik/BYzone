@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar, FaGoogle } from 'react-icons/fa';
 
-const API_KEY = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
+// The worker holds the Places key and the cache. The browser only ever sees
+// the finished list.
+const API_URL = import.meta.env.VITE_API_URL;
+// Not a credential — it only builds the "see all reviews" link.
 const PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID;
 
 const StarRating = ({ rating }) => (
@@ -58,18 +61,10 @@ const TRUST_BADGES = [
 ];
 
 async function fetchReviews() {
-  const response = await fetch(`https://places.googleapis.com/v1/places/${PLACE_ID}?key=${API_KEY}`, {
-    headers: { 'X-Goog-FieldMask': 'reviews,rating,userRatingCount' },
-  });
-  if (!response.ok) throw new Error(`Places API error: ${response.status}`);
+  const response = await fetch(`${API_URL}/reviews`);
+  if (!response.ok) throw new Error(`Reviews endpoint: ${response.status}`);
   const data = await response.json();
-  return (data.reviews || []).map((review) => ({
-    name: review.authorAttribution?.displayName ?? 'Google Reviewer',
-    date: review.relativePublishTimeDescription ?? '',
-    rating: review.rating ?? 5,
-    text: review.text?.text ?? '',
-    platform: 'Google',
-  }));
+  return data.reviews || [];
 }
 
 const ReviewsSection = () => {
@@ -77,16 +72,17 @@ const ReviewsSection = () => {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !API_KEY || !PLACE_ID) return;
+    if (typeof window === 'undefined' || !API_URL) return;
     fetchReviews().then(setReviews).catch(() => setFailed(true));
   }, []);
 
-  // Without Places credentials the section has nothing to show, so skip it
-  // entirely rather than leaving the loading skeletons up forever.
-  if (!API_KEY || !PLACE_ID) return null;
+  // Nothing to show and nothing to say about it: a missing endpoint, a failed
+  // fetch or an empty list all mean the section should not be there at all.
+  // The page reads perfectly well without it.
+  if (!API_URL || failed) return null;
 
-  const loading = reviews === null && !failed;
-  if (!loading && !failed && reviews.length === 0) return null;
+  const loading = reviews === null;
+  if (!loading && reviews.length === 0) return null;
 
   return (
     <section id="reviews" className="py-20 bg-white">
@@ -106,12 +102,6 @@ const ReviewsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {loading
             ? Array.from({ length: 2 }).map((_, i) => <SkeletonCard key={i} />)
-            : failed
-            ? (
-              <p className="col-span-2 text-center text-gray-400 text-sm">
-                Failed to load reviews. Please try again later.
-              </p>
-            )
             : reviews.map((review, i) => <ReviewCard key={i} review={review} />)}
         </div>
 
