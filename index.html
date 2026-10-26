@@ -27,5 +27,14 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.jsx" prerender></script>
+
+    <!-- Cloudflare Web Analytics. Cookieless, so no consent banner is
+         needed. The token identifies the site, not a visitor, and is
+         public by design: it ships in every page. -->
+    <script
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "d5e0837a2b0a4fb785fdfd81eb154d60"}'
+    ></script>
   </body>
 </html>
