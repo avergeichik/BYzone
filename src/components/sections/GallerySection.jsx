@@ -4,7 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import { SIZES } from '../../imageSizes';
 
 const BASE = import.meta.env.BASE_URL;
-const GALLERY_COUNT = 19;
+const GALLERY_COUNT = 18;
 
 // Two renditions per photo, both built by `npm run images`: a square crop for
 // the grid and a larger uncropped one the lightbox shows on demand.

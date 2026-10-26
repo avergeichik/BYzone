@@ -26,7 +26,6 @@ const GALLERY = [
   'IMG_6177.jpg',
   'IMG_6178.JPG',
   'IMG_6179.JPG',
-  'IMG_6181.JPG',
   'IMG_6182.JPG',
   'IMG_6183.JPG',
   'IMG_6184.jpg',
