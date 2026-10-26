@@ -1,25 +1,78 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 import { SIZES } from '../../imageSizes';
 
 const BASE = import.meta.env.BASE_URL;
-const GALLERY_COUNT = 18;
+
+// One line per photo, in the order `npm run images` numbers them. The alt
+// text describes what the photo actually shows: a screen reader user gets
+// the work rather than eighteen identical "Project photo" labels, and image
+// search gets something to index.
+const GALLERY_ALTS = [
+  'White bay window with a sloped seat board on a painted brick bungalow',
+  'Black sliding patio door opening onto a wooden deck',
+  'Dark grey sunroom addition with wide sliding glass doors onto a deck',
+  'White sliding patio door set into a stucco wall above a deck',
+  'Black front door with glass panels and a transom in a red brick entryway',
+  'Grey panelled front door with a sidelight and transom in a brick entry',
+  'Black front door with sidelights and a transom under a covered porch',
+  'White bay window with red trim on a light grey home exterior',
+  'White triple slider window on a red and grey panelled wall',
+  'Interior view of a white bay window looking out onto an open field',
+  'Blue-grey front door with a sidelight and transom on a white porch',
+  'Black basement egress window set into a new window well',
+  'Interior corner windows with black frames looking onto a garden',
+  'Black triple casement window in beige siding on a gable wall',
+  'White basement window set into a brick and concrete foundation',
+  'Blue-grey craftsman front door with a decorative glass panel in red brick',
+  'Black arched-top triple window on a brick gable wall',
+  'Interior view of a white bay window in a basement under renovation',
+];
 
 // Two renditions per photo, both built by `npm run images`: a square crop for
 // the grid and a larger uncropped one the lightbox shows on demand.
-const GALLERY_IMAGES = Array.from({ length: GALLERY_COUNT }, (_, i) => {
+const GALLERY_IMAGES = GALLERY_ALTS.map((alt, i) => {
   const name = `gallery-${String(i + 1).padStart(2, '0')}.webp`;
   return {
     thumb: `${BASE}gallery/thumb/${name}`,
     full: `${BASE}gallery/full/${name}`,
-    alt: 'Project photo',
+    alt,
   };
 });
 
 const GallerySection = () => {
   const [lightbox, setLightbox] = useState(null);
   const [errors, setErrors] = useState({});
+  // The tile that opened the lightbox, so focus can go back where it was.
+  const opener = useRef(null);
+  const closeButton = useRef(null);
+
+  const open = (index, element) => {
+    opener.current = element;
+    setLightbox(index);
+  };
+
+  const close = () => {
+    setLightbox(null);
+    opener.current?.focus();
+  };
+
+  // Escape closes it, and the page behind stops scrolling while it is open.
+  useEffect(() => {
+    if (lightbox === null) return undefined;
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') close();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeButton.current?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [lightbox]);
 
   const handleError = (index) => {
     setErrors((prev) => ({ ...prev, [index]: true }));
@@ -49,7 +102,7 @@ const GallerySection = () => {
               return (
                 <button
                   key={index}
-                  onClick={() => setLightbox(index)}
+                  onClick={(e) => open(index, e.currentTarget)}
                   className="group relative aspect-square overflow-hidden rounded-xl bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-green"
                 >
                   <img
@@ -105,11 +158,15 @@ const GallerySection = () => {
       {lightbox !== null && (
         <div
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
-          onClick={() => setLightbox(null)}
+          onClick={close}
+          role="dialog"
+          aria-modal="true"
+          aria-label={GALLERY_IMAGES[lightbox].alt}
         >
           <button
+            ref={closeButton}
             className="absolute top-4 right-4 text-white/80 hover:text-white"
-            onClick={() => setLightbox(null)}
+            onClick={close}
             aria-label="Close"
           >
             <FaTimes size={28} />

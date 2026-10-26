@@ -45,6 +45,13 @@ const ABOUT = ['1.JPG', '2.JPG', '3.JPG', '4.JPG'];
 // This one shows a bay window install, which is what the headline leads with.
 const HERO_SOURCE = 'after1.jpg';
 
+// The home-screen icon. index.html and manifest.json used to point at a
+// logo.png that has never existed in this repo, so both were 404s. The only
+// master is the transparent logo in public/, which is why this one source
+// comes from the output directory rather than photos/.
+const ICON_SOURCE = join(OUT, 'logo-transparent-bg.png');
+const ICON_SIZES = [180, 512];
+
 // Dimensions live in src/imageSizes.js so the components can reserve the same
 // boxes with width/height. Only the encoder quality is decided here.
 const QUALITY = {
@@ -80,6 +87,20 @@ async function contain(src, dest, { width, height, quality }) {
   return sizeOf(dest);
 }
 
+// Square, padded, and flattened onto white: the logo is transparent and iOS
+// composites a transparent icon onto black.
+async function icon(src, dest, size) {
+  const pad = Math.round(size * 0.08);
+  const white = { r: 255, g: 255, b: 255, alpha: 1 };
+  await sharp(src)
+    .resize(size - pad * 2, size - pad * 2, { fit: 'contain', background: white })
+    .extend({ top: pad, bottom: pad, left: pad, right: pad, background: white })
+    .flatten({ background: white })
+    .png()
+    .toFile(dest);
+  return sizeOf(dest);
+}
+
 async function main() {
   for (const dir of ['gallery/thumb', 'gallery/full', 'about']) {
     await rm(join(OUT, dir), { recursive: true, force: true });
@@ -106,6 +127,12 @@ async function main() {
   const heroBytes = await cover(join(SRC_GALLERY, HERO_SOURCE), join(OUT, 'hero.webp'), opts('hero'));
   outputBytes += heroBytes;
 
+  let iconBytes = 0;
+  for (const size of ICON_SIZES) {
+    iconBytes += await icon(ICON_SOURCE, join(OUT, `icon-${size}.png`), size);
+  }
+  outputBytes += iconBytes;
+
   const counts = await Promise.all(
     ['gallery/thumb', 'gallery/full', 'about'].map(async (d) => (await readdir(join(OUT, d))).length)
   );
@@ -114,6 +141,7 @@ async function main() {
   console.log(`gallery full    ${counts[1]}`);
   console.log(`about           ${counts[2]}`);
   console.log(`hero            1  (${kb(heroBytes)})`);
+  console.log(`icons           ${ICON_SIZES.length}  (${kb(iconBytes)})`);
   console.log('');
   console.log(`originals       ${kb(sourceBytes)}`);
   console.log(`generated       ${kb(outputBytes)}`);
